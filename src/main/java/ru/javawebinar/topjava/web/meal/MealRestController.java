@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -49,8 +51,15 @@ public class MealRestController {
         service.update(meal);
     }
 
+    public List<MealWithExceed> getBetween(LocalDate fromDate, LocalDate toDate, LocalTime fromTime, LocalTime toTime) {
+        log.info("getAll filtered");
+        LocalTime startTime = fromTime == null ? LocalTime.MIN : fromTime;
+        LocalTime endTime = toTime == null ? LocalTime.MAX : toTime;
+        return MealsUtil.getFilteredWithExceeded(service.getBetweenDates(fromDate, toDate, AuthorizedUser.id()), startTime, endTime, AuthorizedUser.getCaloriesPerDay());
+    }
+
     public List<MealWithExceed> getAll() {
         log.info("getAll");
-        return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
     }
 }

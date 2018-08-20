@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +62,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     public List<Meal> getAll(int userId) {
         log.info("getAll for user {}", userId);
         return repository.values().stream().filter(meal -> meal.getUserId() == userId).sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Meal> getBetweenDates(LocalDate fromDate, LocalDate toDate, int userId) {
+        log.info("getAll meals between {} and {}, for user {}", fromDate, toDate, userId);
+        LocalDate from = fromDate == null ? LocalDate.MIN : fromDate;
+        LocalDate to = toDate == null ? LocalDate.MAX : toDate;
+        return getAll(userId).stream().filter(meal -> DateTimeUtil.isBetween(meal.getDate(), from, to)).collect(Collectors.toList());
     }
 }

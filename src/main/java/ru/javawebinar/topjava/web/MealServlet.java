@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
@@ -33,21 +36,32 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
+        String action = request.getParameter("action");
+        if (action == null) {
+            String id = request.getParameter("id");
 
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                AuthorizedUser.id(),
-                LocalDateTime.parse(request.getParameter("dateTime")),
-                request.getParameter("description"),
-                Integer.valueOf(request.getParameter("calories")));
+            Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+                    AuthorizedUser.id(),
+                    LocalDateTime.parse(request.getParameter("dateTime")),
+                    request.getParameter("description"),
+                    Integer.valueOf(request.getParameter("calories")));
 
-        log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        if (meal.isNew()) {
-            controller.create(meal);
-        } else {
-            controller.update(meal, Integer.parseInt(id));
+            log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+            if (meal.isNew()) {
+                controller.create(meal);
+            } else {
+                controller.update(meal, Integer.parseInt(id));
+            }
+            response.sendRedirect("meals");
+        } else if (action.equals("filter")){
+            log.info("get between");
+            request.setAttribute("meals", controller.getBetween(
+                    parseLocalDate(request.getParameter("fromDate")),
+                    parseLocalDate(request.getParameter("toDate")),
+                    parseLocalTime(request.getParameter("fromTime")),
+                    parseLocalTime(request.getParameter("toTime"))));
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
-        response.sendRedirect("meals");
     }
 
     @Override
