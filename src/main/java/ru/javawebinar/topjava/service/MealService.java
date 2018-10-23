@@ -24,4 +24,8 @@ public interface MealService {
     Meal update(Meal meal, int userId) throws NotFoundException;
 
     Meal create(Meal meal, int userId);
+
+    default Meal getWithUser(int mealId, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }
