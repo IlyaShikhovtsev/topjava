@@ -1,6 +1,7 @@
-package ru.javawebinar.topjava.web;
+package ru.javawebinar.topjava.web.resource;
 
 import org.junit.Test;
+import ru.javawebinar.topjava.web.AbstractControllerTest;
 
 import static org.hamcrest.Matchers.*;
 
