@@ -26,4 +26,14 @@ public class RootControllerTest extends AbstractControllerTest {
                         )
                 )));
     }
+
+    @Test
+    public void testMeals() throws Exception {
+        mockMvc.perform(get("/meals"))
+                .andDo(print())
+                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"))
+                .andExpect(view().name("meals"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("meals", hasSize(6)));
+    }
 }
