@@ -8,6 +8,8 @@ import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -17,6 +19,8 @@ import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.TimingRules;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static ru.javawebinar.topjava.Profiles.DATAJPA;
+import static ru.javawebinar.topjava.Profiles.JPA;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 
 @ContextConfiguration({
@@ -30,6 +34,9 @@ abstract public class AbstractServiceTest {
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
 
+    @Autowired
+    public Environment env;
+
     @Rule
     public Stopwatch stopwatch = TimingRules.STOPWATCH;
 
@@ -39,6 +46,10 @@ abstract public class AbstractServiceTest {
     static {
         // needed only for java.util.logging (postgres driver)
         SLF4JBridgeHandler.install();
+    }
+
+    protected boolean isJpa() {
+        return env.acceptsProfiles(DATAJPA, JPA);
     }
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778
