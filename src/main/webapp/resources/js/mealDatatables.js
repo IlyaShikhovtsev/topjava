@@ -42,6 +42,11 @@ var isFiltered = function () {
         }
     }
     return false;
+};
+
+function clearFilters() {
+    $("#filterForm").find(":input").val("");
+    updateTable();
 }
 
 function updateTable() {

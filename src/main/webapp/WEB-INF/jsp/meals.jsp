@@ -32,9 +32,10 @@
             </dl>
         </form>
         <button onclick="filter()"><span class="glyphicon glyphicon-filter" style="color: #2E6E9E"></span></button>
+        <button onclick="clearFilters()"><span class="glyphicon glyphicon-scissors" style="color: #2E6E9E"></span></button>
 
         <hr>
-        <a onclick="add()"><spring:message code="meal.add"/></a>
+        <button onclick="add()"><span class="glyphicon glyphicon-plus" style="color: red"></span></button>
         <table class="table table-striped display" id="datatable">
             <thead>
             <tr>
