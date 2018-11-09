@@ -9,58 +9,61 @@
 <script type="text/javascript" src="resources/js/mealDatatables.js" defer></script>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
-<section>
-    <h3><spring:message code="meal.title"/></h3>
+<div class="jumbotron">
+    <div class="container">
+        <h3><spring:message code="meal.title"/></h3>
 
-    <form method="post" action="meals/filter">
-        <dl>
-            <dt><spring:message code="meal.startDate"/>:</dt>
-            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.endDate"/>:</dt>
-            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.startTime"/>:</dt>
-            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
-        </dl>
-        <dl>
-            <dt><spring:message code="meal.endTime"/>:</dt>
-            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
-        </dl>
-        <button type="submit"><spring:message code="meal.filter"/></button>
-    </form>
-    <hr>
-    <a onclick="add()"><spring:message code="meal.add"/></a>
-    <hr>
-    <table class="table table-striped display" id="datatable">
-        <thead>
-        <tr>
-            <th><spring:message code="meal.dateTime"/></th>
-            <th><spring:message code="meal.description"/></th>
-            <th><spring:message code="meal.calories"/></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
-            <tr id="${meal.id}" class="${meal.exceed ? 'exceeded' : 'normal'}">
-                <td>
-                        <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
-                        <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
-                        <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
-                        ${fn:formatDateTime(meal.dateTime)}
-                </td>
-                <td>${meal.description}</td>
-                <td>${meal.calories}</td>
-                <td><a href="meals/update?id=${meal.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                <td><a class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+        <form id="filterForm">
+            <dl>
+                <dt><spring:message code="meal.startDate"/>:</dt>
+                <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+            </dl>
+            <dl>
+                <dt><spring:message code="meal.endDate"/>:</dt>
+                <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+            </dl>
+            <dl>
+                <dt><spring:message code="meal.startTime"/>:</dt>
+                <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+            </dl>
+            <dl>
+                <dt><spring:message code="meal.endTime"/>:</dt>
+                <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+            </dl>
+        </form>
+        <button onclick="filter()"><span class="glyphicon glyphicon-filter" style="color: #2E6E9E"></span></button>
+
+        <hr>
+        <a onclick="add()"><spring:message code="meal.add"/></a>
+        <table class="table table-striped display" id="datatable">
+            <thead>
+            <tr>
+                <th><spring:message code="meal.dateTime"/></th>
+                <th><spring:message code="meal.description"/></th>
+                <th><spring:message code="meal.calories"/></th>
+                <th></th>
+                <th></th>
             </tr>
-        </c:forEach>
-    </table>
-</section>
+            </thead>
+            <c:forEach items="${meals}" var="meal">
+                <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
+                <tr id="${meal.id}" class="${meal.exceed ? 'exceeded' : 'normal'}">
+                    <td>
+                            <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
+                            <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
+                            <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
+                            ${fn:formatDateTime(meal.dateTime)}
+                    </td>
+                    <td>${meal.description}</td>
+                    <td>${meal.calories}</td>
+                    <td><a href="meals/update?id=${meal.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td><a class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+</div>
+
 
 <div class="modal fade" id="editRow" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
