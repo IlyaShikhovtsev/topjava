@@ -55,8 +55,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>
-                <td><a class="delete"><spring:message code="common.delete"/></a></td>
+                <td><a href="meals/update?id=${meal.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                <td><a class="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
             </tr>
         </c:forEach>
     </table>
@@ -72,7 +72,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="detailsForm" method="post" action="meals">
+                <form id="detailsForm">
                     <input type="hidden" name="id" value="${meal.id}">
                     <dl>
                         <dt><spring:message code="meal.dateTime"/>:</dt>
