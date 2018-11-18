@@ -7,13 +7,14 @@ import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.time.LocalDateTime.of;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -77,9 +78,11 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void getBetweenTest() throws Exception {
-        String json = mockMvc.perform(get(REST_URL + "/between?startDateTime=" +
-                of(2015, Month.MAY, 30, 9, 0).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
-                "&endDateTime=" + of(2015, Month.MAY, 30, 20, 0).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+        String json = mockMvc.perform(get(REST_URL +
+                "/between?startDate=" + LocalDate.of(2015, Month.MAY, 30) +
+                "&startTime=" + LocalTime.of(10, 0).format(DateTimeFormatter.ISO_LOCAL_TIME) +
+                "&endDate=" + LocalDate.of(2015, Month.MAY, 30).format(DateTimeFormatter.ISO_LOCAL_DATE) +
+                "&endTime=" + LocalTime.of(20, 0).format(DateTimeFormatter.ISO_LOCAL_TIME)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
