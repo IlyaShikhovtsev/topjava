@@ -10,5 +10,6 @@
     <!-- Not necessary, already included with component-scan -->
     <!--<context:annotation-config/>-->
 
+    <bean class="ru.javawebinar.topjava.util.ProfilingHandlerBeanPostProcessor"/>
     <context:component-scan base-package="ru.javawebinar.**.service"/>
 </beans>
